@@ -1,0 +1,16 @@
+[package]
+name = "razermapper-e2e-tests"
+version = "0.2.0"
+edition = "2021"
+publish = false
+
+[dev-dependencies]
+razermapper-common = { path = "../razermapper-common" }
+tokio = { workspace = true }
+tempfile = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+[[bin]]
+name = "e2e"
+path = "e2e.rs"

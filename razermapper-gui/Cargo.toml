@@ -1,0 +1,33 @@
+[package]
+name = "razermapper-gui"
+version = "0.2.0"
+edition = "2021"
+
+[lib]
+name = "razermapper_gui"
+path = "src/lib.rs"
+
+[[bin]]
+name = "razermapper-gui"
+path = "src/main.rs"
+
+[dependencies]
+# GUI framework
+iced = { version = "0.12", features = ["tokio", "svg"] }
+
+# Common types and IPC
+razermapper-common = { path = "../razermapper-common" }
+
+# Serialization
+serde = { workspace = true }
+bincode = { workspace = true }
+
+# Async runtime
+tokio = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }

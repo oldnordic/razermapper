@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Razermapper
+Comment=Input remapper and macro engine for Razer devices
+Exec=razermapper-gui
+Icon=input-keyboard
+Terminal=false
+Type=Application
+Categories=Utility;Settings;HardwareSettings;
+Keywords=razer;macro;keyboard;mouse;remap;

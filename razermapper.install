@@ -1,0 +1,109 @@
+## Razermapper pacman install hooks
+
+post_install() {
+    echo "================================================================"
+    echo "  Razermapper v0.1.0 installed successfully!"
+    echo "================================================================"
+    echo ""
+    echo "SETUP INSTRUCTIONS:"
+    echo ""
+    echo "1. Add your user to the 'input' group (REQUIRED):"
+    echo "   sudo usermod -aG input $USER"
+    echo "   (Log out and back in for changes to take effect)"
+    echo ""
+    echo "2. Reload udev rules:"
+    echo "   sudo udevadm control --reload-rules"
+    echo "   sudo udevadm trigger"
+    echo ""
+    echo "3. Start the daemon:"
+    echo "   sudo systemctl enable --now razermapperd.service"
+    echo ""
+    echo "4. Launch the GUI:"
+    echo "   razermapper-gui"
+    echo ""
+    echo "TESTING:"
+    echo "  Test device grabbing with:"
+    echo "    sudo razermapper-test-grab /dev/input/eventX"
+    echo ""
+    echo "LOGS:"
+    echo "  View daemon logs:"
+    echo "    journalctl -u razermapperd -f"
+    echo ""
+    echo "CONFIG:"
+    echo "  Edit configuration at: /etc/razermapper/config.yaml"
+    echo "================================================================"
+
+    # Reload systemd
+    systemctl daemon-reload 2>/dev/null || true
+
+    # Reload udev rules
+    udevadm control --reload-rules 2>/dev/null || true
+    udevadm trigger 2>/dev/null || true
+}
+
+post_upgrade() {
+    echo "================================================================"
+    echo "  Razermapper upgraded to v0.1.0"
+    echo "================================================================"
+    echo ""
+    echo "Restarting daemon..."
+    systemctl daemon-reload 2>/dev/null || true
+
+    if systemctl is-active --quiet razermapperd.service; then
+        systemctl restart razermapperd.service
+        echo "Daemon restarted successfully."
+    else
+        echo "Daemon not running. Start with:"
+        echo "  sudo systemctl start razermapperd.service"
+    fi
+
+    # Reload udev rules
+    udevadm control --reload-rules 2>/dev/null || true
+    udevadm trigger 2>/dev/null || true
+
+    echo ""
+    echo "NOTE: If you have the GUI open, please restart it."
+    echo "================================================================"
+}
+
+pre_remove() {
+    echo "================================================================"
+    echo "  Removing Razermapper..."
+    echo "================================================================"
+
+    # Stop and disable service
+    if systemctl is-active --quiet razermapperd.service; then
+        echo "Stopping razermapperd service..."
+        systemctl stop razermapperd.service
+    fi
+
+    if systemctl is-enabled --quiet razermapperd.service 2>/dev/null; then
+        echo "Disabling razermapperd service..."
+        systemctl disable razermapperd.service
+    fi
+
+    echo "Service stopped and disabled."
+}
+
+post_remove() {
+    echo "================================================================"
+    echo "  Razermapper removed successfully"
+    echo "================================================================"
+    echo ""
+    echo "CLEANUP (optional):"
+    echo "  Remove configuration:"
+    echo "    sudo rm -rf /etc/razermapper"
+    echo ""
+    echo "  Remove user from input group (if no longer needed):"
+    echo "    sudo gpasswd -d $USER input"
+    echo ""
+    echo "  Reload udev rules:"
+    echo "    sudo udevadm control --reload-rules"
+    echo "================================================================"
+
+    # Reload systemd
+    systemctl daemon-reload 2>/dev/null || true
+
+    # Reload udev rules
+    udevadm control --reload-rules 2>/dev/null || true
+}

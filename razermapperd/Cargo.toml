@@ -1,0 +1,38 @@
+[package]
+name = "razermapperd"
+version = "0.2.0"
+edition = "2021"
+description = "Privileged system daemon for razermapper"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+razermapper-common = { path = "../razermapper-common" }
+
+evdev = "0.12"
+uinput-sys = "0.1"
+serde_yaml = "0.9"
+libc = "0.2"
+nix = { version = "0.29", features = ["user", "ioctl", "fs"] }
+udev = "0.9"
+tokio = { workspace = true }
+serde = { workspace = true }
+bincode = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tempfile = "3"
+async-trait = "0.1"
+
+[features]
+default = []
+token-auth = []
+
+[package.metadata.deb]
+maintainer = "Razermapper Team"
+copyright = "2024, Razermapper Team"
+depends = "$auto"
+section = "utility"
+priority = "optional"
+assets = [
+    ["target/release/razermapperd", "usr/bin/", "755"],
+    ["../razermapperd.service", "usr/lib/systemd/system/", "644"],
+]

@@ -1,0 +1,31 @@
+# Razermapper Configuration
+# Copy to /etc/razermapper/config.yaml or ~/.config/razermapper/config.yaml
+
+# Global settings
+settings:
+  # Delay between macro actions in milliseconds
+  default_delay_ms: 10
+  # Maximum concurrent macro executions
+  max_concurrent_macros: 10
+  # Enable/disable token authentication for IPC
+  token_auth: false
+
+# Default profile - loaded on daemon startup
+profiles:
+  default:
+    name: "Default Profile"
+    macros: {}
+    # Example macro:
+    # my_macro:
+    #   name: "my_macro"
+    #   trigger:
+    #     key_combo:
+    #       - 56  # Left Alt
+    #       - 33  # F key
+    #   actions:
+    #     - key_press: 29  # Left Ctrl
+    #     - key_press: 46  # C key
+    #     - delay_ms: 50
+    #     - key_release: 46
+    #     - key_release: 29
+    #   device_id: null  # null = any device

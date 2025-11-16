@@ -1,0 +1,53 @@
+[Unit]
+Description=Razermapper Daemon - Advanced keyboard and mouse macro mapping
+Documentation=https://github.com/razermapper/razermapper
+After=network.target local-fs.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/razermapperd
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+User=root
+Group=input
+
+# Security hardening
+CapabilityBoundingSet=CAP_SYS_RAWIO
+AmbientCapabilities=CAP_SYS_RAWIO
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+RemoveIPC=true
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+
+# Directory permissions
+RuntimeDirectory=razermapper
+RuntimeDirectoryMode=0750
+StateDirectory=razermapper
+StateDirectoryMode=0750
+CacheDirectory=razermapper
+CacheDirectoryMode=0750
+ConfigurationDirectory=razermapper
+ConfigurationDirectoryMode=0750
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=razermapperd
+
+# Resource limits
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
